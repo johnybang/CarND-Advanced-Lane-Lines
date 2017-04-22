@@ -1,4 +1,5 @@
 ## Advanced Lane Finding
+John Bang - 4/21/17
 
 ### As a part of the Udacity Self Driving Car Engineer Nanodegree program, we use computer vision to again implement lane finding, but using a more advanced set of techniques than the first project of the course.
 
@@ -22,7 +23,7 @@ The goals / steps of this project are the following:
 [image1]: ./examples/calibration1_undistortion.jpg "calibration1.jpg undistortion"
 [image2]: ./examples/test1_undistortion.jpg "test1.jpg undistortion"
 [image3]: ./examples/test5_binary.jpg "Binary Example"
-[image4]: ./examples/warped_straight_lines.jpg "Warp Example"
+[image4]: ./examples/straight_lines_warped.jpg "Warp Example"
 [image5]: ./examples/color_fit_lines.jpg "Fit Visual"
 [image6]: ./examples/example_output.jpg "Output"
 [video1]: ./project_video.mp4 "Video"
@@ -67,31 +68,36 @@ I used a combination of color and gradient thresholds to generate a binary image
 
 #### 3. Describe how (and identify where in your code) you performed a perspective transform and provide an example of a transformed image.
 
-The code for my perspective transform includes a function called `warper()`, which appears in lines 1 through 8 in the file `example.py` (output_images/examples/example.py) (or, for example, in the 3rd code cell of the IPython notebook).  The `warper()` function takes as inputs an image (`img`), as well as source (`src`) and destination (`dst`) points.  I chose the hardcode the source and destination points in the following manner:
+The code for my perspective transform is in [code cells 6-8](AdvancedLaneFinding.html#perspective) of the jupyter notebook.  In cell 6, I hard code source (`srcpoints`) and destination (`dstpoints`) points.  I chose to hardcode the source and destination points in the following manner:
 
 ```python
-src = np.float32(
-    [[(img_size[0] / 2) - 55, img_size[1] / 2 + 100],
-    [((img_size[0] / 6) - 10), img_size[1]],
-    [(img_size[0] * 5 / 6) + 60, img_size[1]],
-    [(img_size[0] / 2 + 55), img_size[1] / 2 + 100]])
-dst = np.float32(
-    [[(img_size[0] / 4), 0],
-    [(img_size[0] / 4), img_size[1]],
-    [(img_size[0] * 3 / 4), img_size[1]],
-    [(img_size[0] * 3 / 4), 0]])
+# src points rectangle vertices
+srcpoints = np.float32(
+    [[(imgsize[0] / 2) - 60, imgsize[1] / 2 + 100],
+    [((imgsize[0] / 6) - 10), imgsize[1]],
+    [(imgsize[0] * 5 / 6) + 40, imgsize[1]],
+    [(imgsize[0] / 2 + 64), imgsize[1] / 2 + 100]])
+
+# dst points rectangle vertices
+dstpoints = np.float32(
+    [[(imgsize[0] / 4), 0],
+    [(imgsize[0] / 4), imgsize[1]],
+    [(imgsize[0] * 3 / 4), imgsize[1]],
+    [(imgsize[0] * 3 / 4), 0]])
 ```
 
 This resulted in the following source and destination points:
 
-| Source        | Destination   | 
-|:-------------:|:-------------:| 
-| 585, 460      | 320, 0        | 
-| 203, 720      | 320, 720      |
-| 1127, 720     | 960, 720      |
-| 695, 460      | 960, 0        |
+| srcpoints                       | dstpoints     |
+|:--------------------------------|:--------------|
+| [ 580.  460.]                   | [ 320.    0.] |
+| [ 203.33332825  720.        ]   | [ 320.  720.] |
+| [ 1106.66662598   720.        ] | [ 960.  720.] |
+| [ 704.  460.]                   | [ 960.    0.] |
 
-I verified that my perspective transform was working as expected by drawing the `src` and `dst` points onto a test image and its warped counterpart to verify that the lines appear parallel in the warped image.
+Further in cell 6, I computed the perspective transform matrix (`M`) to be used for perspective warping.
+
+In cell 7, I verified the validity of my perspective transform by warping the undistorted straight road images, then drawing the `srcpoints` and `dstpoints` polygons onto them to verify that the lines appear parallel in the warped image.
 
 ![alt text][image4]
 
