@@ -24,7 +24,7 @@ The goals / steps of this project are the following:
 [image2]: ./examples/test1_undistortion.jpg "test1.jpg undistortion"
 [image3]: ./examples/test5_binary.jpg "Binary Example"
 [image4]: ./examples/straight_lines_warped.jpg "Warp Example"
-[image5]: ./examples/color_fit_lines.jpg "Fit Visual"
+[image5]: ./examples/test2_polyfit.jpg "Fit Visual"
 [image6]: ./examples/example_output.jpg "Output"
 [video1]: ./project_video.mp4 "Video"
 
@@ -103,7 +103,13 @@ In cell 7, I verified the validity of my perspective transform by warping the un
 
 #### 4. Describe how (and identify where in your code) you identified lane-line pixels and fit their positions with a polynomial?
 
-Then I did some other stuff and fit my lane lines with a 2nd order polynomial kinda like this:
+In cells 9 and 10, I identify lane line pixels for the left and right and fit their positions with a 2nd order polynomial.  I implemented three approaches, two of which are actually used in the pipeline and one which was simply considered:
+
+1. A sliding window using a convolution which maximizes pixel count within some margin of the previous window position (not used in pipeline) 
+2. A sliding window which recenters based on pixel mean of the previous window if enough pixels are present in the previous window (used in pipeline when no valid previous fit exists) 
+3. A fixed margin surrounding a previous polynomial fit (used in the pipeline when a valid previous fit exists)
+
+When tuned for the test images, both methods 1 and 2 performed similarly.  I opted for 2. because it seemed a little less complex, but I'm open to using 1. if 2. starts having trouble at some point in the future.  Here's a visualization of the three methods on one test image ("hot" pixels fall inside the green boundaries and the yellow lines are the 2nd order polynomial fit on the "hot" pixels):
 
 ![alt text][image5]
 
