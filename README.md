@@ -25,7 +25,8 @@ The goals / steps of this project are the following:
 [image3]: ./examples/test5_binary.jpg "Binary Example"
 [image4]: ./examples/straight_lines_warped.jpg "Warp Example"
 [image5]: ./examples/test2_polyfit.jpg "Fit Visual"
-[image6]: ./examples/example_output.jpg "Output"
+[image6]: ./examples/test3_curverad.jpg "Curvature Calc"
+[image7]: ./examples/example_output.jpg "Output"
 [video1]: ./project_video.mp4 "Video"
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/571/view) Points
@@ -68,7 +69,7 @@ I used a combination of color and gradient thresholds to generate a binary image
 
 #### 3. Describe how (and identify where in your code) you performed a perspective transform and provide an example of a transformed image.
 
-The code for my perspective transform is in [code cells 6-8](AdvancedLaneFinding.html#perspective) of the jupyter notebook.  In cell 6, I hard code source (`srcpoints`) and destination (`dstpoints`) points.  I chose to hardcode the source and destination points in the following manner:
+The code for my perspective transform is in [code cells 6-8](https://github.com/johnybang/CarND-Advanced-Lane-Lines/blob/master/AdvancedLaneFinding.ipynb#perspective) of the jupyter notebook.  In cell 6, I hard code source (`srcpoints`) and destination (`dstpoints`) points.  I chose to hardcode the source and destination points in the following manner:
 
 ```python
 # src points rectangle vertices
@@ -103,7 +104,7 @@ In cell 7, I verified the validity of my perspective transform by warping the un
 
 #### 4. Describe how (and identify where in your code) you identified lane-line pixels and fit their positions with a polynomial?
 
-In cells 9 and 10, I identify lane line pixels for the left and right and fit their positions with a 2nd order polynomial.  I implemented three approaches, two of which are actually used in the pipeline and one which was simply considered:
+In [code cells 9 and 10](https://github.com/johnybang/CarND-Advanced-Lane-Lines/blob/master/AdvancedLaneFinding.ipynb#fit_lane), I identify lane line pixels for the left and right and fit their positions with a 2nd order polynomial.  I implemented three approaches, two of which are actually used in the pipeline and one which was simply considered and plotted:
 
 1. A sliding window using a convolution which maximizes pixel count within some margin of the previous window position (not used in pipeline) 
 2. A sliding window which recenters based on pixel mean of the previous window if enough pixels are present in the previous window (used in pipeline when no valid previous fit exists) 
@@ -115,13 +116,15 @@ When tuned for the test images, both methods 1 and 2 performed similarly.  I opt
 
 #### 5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
 
-I did this in lines # through # in my code in `my_other_file.py`
+In [code cells 11 and 12](https://github.com/johnybang/CarND-Advanced-Lane-Lines/blob/master/AdvancedLaneFinding.ipynb#curvature) I computed the radius of curvature in meters by converting the lane pixels index positions in to meter units, fitting a 2nd degree polynomial curve to these points yielding the polynomial in meters, and finally computing the radius of curvature according to the formula [shown here](http://www.intmath.com/applications-differentiation/8-radius-curvature.php). Within the `compute_curvature()` function, I hardcoded the first and second derivatives assuming a 2nd degree polynomial function.
+
+![alt text][image6]
 
 #### 6. Provide an example image of your result plotted back down onto the road such that the lane area is identified clearly.
 
 I implemented this step in lines # through # in my code in `yet_another_file.py` in the function `map_lane()`.  Here is an example of my result on a test image:
 
-![alt text][image6]
+![alt text][image7]
 
 ---
 
