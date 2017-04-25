@@ -27,7 +27,7 @@ The goals / steps of this project are the following:
 [image5]: ./examples/test2_polyfit.jpg "Fit Visual"
 [image6]: ./examples/test3_curverad.jpg "Curvature Calc"
 [image7]: ./examples/test6_regionoverlay.jpg "Output"
-[video1]: ./project_video.mp4 "Video"
+[video1]: ./project_video_out.mp4 "Video"
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/571/view) Points
 
@@ -122,7 +122,7 @@ In [code cells 11 and 12](https://github.com/johnybang/CarND-Advanced-Lane-Lines
 
 #### 6. Provide an example image of your result plotted back down onto the road such that the lane area is identified clearly.
 
-I implemented this step in lines # through # in my code in `yet_another_file.py` in the function `map_lane()`.  Here is an example of my result on a test image:
+I implemented this step in [code cells 13 and 14](https://github.com/johnybang/CarND-Advanced-Lane-Lines/blob/master/AdvancedLaneFinding.ipynb#warp_lane) of the jupyter notebook. Here is an example of my result on a test image, including the top-down view of the lane region that was warped and overlaid onto the driving image:
 
 ![alt text][image7]
 
@@ -132,7 +132,7 @@ I implemented this step in lines # through # in my code in `yet_another_file.py`
 
 #### 1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (wobbly lines are ok but no catastrophic failures that would cause the car to drive off the road!).
 
-Here's a [link to my video result](./project_video.mp4)
+Here's a [link to my video result](https://github.com/johnybang/CarND-Advanced-Lane-Lines/blob/master/project_video_out.mp4)
 
 ---
 
@@ -140,4 +140,12 @@ Here's a [link to my video result](./project_video.mp4)
 
 #### 1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
 
-Here I'll talk about the approach I took, what techniques I used, what worked and why, where the pipeline might fail and how I might improve it if I were going to pursue this project further.  
+I ran into a few notable issues and plenty of areas where I'd like to dive deeper, time permitting in the future:
+
+* I used HLS images to do S-channel color thresholding and L-channel gradient thresholding; I believe this could be refined a bit more with further work on other color channels or more judicious of gradient. It seemed that the gradient would tend to get the edge of the cement wall, which in some cases needed to be mitigated in later stages of the pipeline with other constraints (lane width sanity check, for instance). The angle of the sun having the ground be light while the cement wall is dark, perhaps unsurprisingly, leads to a high gradient in the L-channel.
+* In the sliding window stage, I noticed that the pixel mean recentering approach was vulnerable to an invalid small off-center blob of pixels. It was recentering much too dramatically for one of the windows within one of the test images.  The number of pixels in that window was ~300 while my min recentering threshold was 50. Fortunately, setting it to 350 corrected this case without causing other problems in any test images.
+* The video implementation of the pipeline could certainly be improved. Some items of note:
+  * At first, there was a portion of the video where the left lane line would suddenly become aligned with the wall edge rather than the yellow line.  I was able to improve this by using a sanity check on the lane width to throw out these detections and instead use previous calculations.  However, I believe this exposes a vulnerability to strong shadow contrasts (particularly if parallel to the lane line - this makes it possible to trick the bottom half histogram initialization of the sliding window method).  I would be keen to investigate methods that perhaps circumvent the use of luminosity gradient altogether. I would also consider masking out the edge of the camera as valid lane pixels, but I would be concerned about the constraint this would put on the maximum detectable car position offset.
+  * Overall, in the future I would also pursue more extensive smoothing between frames both for the lane boundaries and the radius and position calculations to make the display more readable. This would of course come with some trade-offs, longer averages lead to longer algorithmic delays in reporting/detecting changes in lane characteristics.
+  * The most valuable next step in the future would be to instrument ways to view the entire pipeline stack in the video so that failure modes could be addressed in the most generalizable way possible. (For instance, at the binary masking or sliding window stage, rather than through frame averaging or frame ignoring strategies.)
+  * More traffic (more cars) could affect performance as well, so I'd want to investigate examples with more cars
