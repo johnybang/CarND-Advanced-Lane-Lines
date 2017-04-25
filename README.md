@@ -20,13 +20,13 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
-[image1]: ./examples/calibration1_undistortion.jpg "calibration1.jpg undistortion"
-[image2]: ./examples/test1_undistortion.jpg "test1.jpg undistortion"
-[image3]: ./examples/test5_binary.jpg "Binary Example"
-[image4]: ./examples/straight_lines_warped.jpg "Warp Example"
-[image5]: ./examples/test2_polyfit.jpg "Fit Visual"
-[image6]: ./examples/test3_curverad.jpg "Curvature Calc"
-[image7]: ./examples/test6_regionoverlay.jpg "Output"
+[image1]: ./output_images/calibration1_undistortion.jpg "calibration1.jpg undistortion"
+[image2]: ./output_images/test1_undistortion.jpg "test1.jpg undistortion"
+[image3]: ./output_images/test5_binary.jpg "Binary Example"
+[image4]: ./output_images/straight_lines_warped.jpg "Warp Example"
+[image5]: ./output_images/test2_polyfit.jpg "Fit Visual"
+[image6]: ./output_images/test3_curverad.jpg "Curvature Calc"
+[image7]: ./output_images/test6_regionoverlay.jpg "Output"
 [video1]: ./project_video_out.mp4 "Video"
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/571/view) Points
