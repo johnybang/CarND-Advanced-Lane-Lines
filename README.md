@@ -26,7 +26,7 @@ The goals / steps of this project are the following:
 [image4]: ./examples/straight_lines_warped.jpg "Warp Example"
 [image5]: ./examples/test2_polyfit.jpg "Fit Visual"
 [image6]: ./examples/test3_curverad.jpg "Curvature Calc"
-[image7]: ./examples/example_output.jpg "Output"
+[image7]: ./examples/test6_regionoverlay.jpg "Output"
 [video1]: ./project_video.mp4 "Video"
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/571/view) Points
