@@ -22,7 +22,12 @@ The goals / steps of this project are the following:
 
 [image1]: ./output_images/calibration1_undistortion.jpg "calibration1.jpg undistortion"
 [image2]: ./output_images/test1_undistortion.jpg "test1.jpg undistortion"
-[image3]: ./output_images/test5_binary.jpg "Binary Example"
+[image3.0]: ./output_images/test1_binary.jpg "Binary Example 1"
+[image3.1]: ./output_images/test2_binary.jpg "Binary Example 2"
+[image3.2]: ./output_images/test3_binary.jpg "Binary Example 3"
+[image3.3]: ./output_images/test4_binary.jpg "Binary Example 4"
+[image3.4]: ./output_images/test5_binary.jpg "Binary Example 5"
+[image3.5]: ./output_images/test6_binary.jpg "Binary Example 6"
 [image4]: ./output_images/straight_lines_warped.jpg "Warp Example"
 [image5]: ./output_images/test2_polyfit.jpg "Fit Visual"
 [image6]: ./output_images/test3_curverad.jpg "Curvature Calc"
@@ -63,9 +68,14 @@ In [code cell 3](https://github.com/johnybang/CarND-Advanced-Lane-Lines/blob/mas
 
 #### 2. Describe how (and identify where in your code) you used color transforms, gradients or other methods to create a thresholded binary image.  Provide an example of a binary image result.
 
-I used a combination of color and gradient thresholds to generate a binary image (thresholding steps at [code cells 4 and 5](https://github.com/johnybang/CarND-Advanced-Lane-Lines/blob/master/AdvancedLaneFinding.ipynb#create_binary) of the jupyter notebook).  Here's an example of my output for this step:
+Originally, I used a combination of color and gradient thresholds to generate a binary image (thresholding steps at [code cells 4 and 5](https://github.com/johnybang/CarND-Advanced-Lane-Lines/blob/master/AdvancedLaneFinding.ipynb#create_binary) of the jupyter notebook).  In the subsequent figure it is "v1." However, using my first reviewer's suggestions as inspiration, I pursued more yellow/white focused thresholding to avoid the pitfalls of gradient.  In the subsequent figure this is labeled "v2."  I even ultimately got away from (hl)S channel.  I found that color thresholding on R(gb) & (hs)V & L(uv) & (la)B was vastly better at identifying lane pixels and rejecting other pixels.  I have plotted a comparison of the previous method and my new method and the binary masking components of each for several test images. Test images 1 and 4 are good examples of the dramatic difference in efficacy of the two approaches:
 
-![alt text][image3]
+![alt text][image3.0]
+![alt text][image3.1]
+![alt text][image3.2]
+![alt text][image3.3]
+![alt text][image3.4]
+![alt text][image3.5]
 
 #### 3. Describe how (and identify where in your code) you performed a perspective transform and provide an example of a transformed image.
 
@@ -132,7 +142,10 @@ I implemented this step in [code cells 13 and 14](https://github.com/johnybang/C
 
 #### 1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (wobbly lines are ok but no catastrophic failures that would cause the car to drive off the road!).
 
-Here's a [link to my video result](https://github.com/johnybang/CarND-Advanced-Lane-Lines/blob/master/project_video_out.mp4)
+I was happy to find that incorporating the first reviewer's suggestion of pursuing yellow/white focused color thresholding for the binary image yielded much better results.  Furthermore, I refined the sanity checks and averaging more judiciously since the underlying computed outputs were more correct from the binary image improvements. Here's a [link to my latest 'v2' video result](https://github.com/johnybang/CarND-Advanced-Lane-Lines/blob/master/project_video_out_v2.mp4).
+
+
+(Not to get confused with v2, but for completeness here is a link to my [previous 'v1' video submission](https://github.com/johnybang/CarND-Advanced-Lane-Lines/blob/master/project_video_out_v1.mp4).)
 
 ---
 
@@ -149,3 +162,4 @@ I ran into a few notable issues and plenty of areas where I'd like to dive deepe
   * Overall, in the future I would also pursue more extensive smoothing between frames both for the lane boundaries and the radius and position calculations to make the display more readable. This would of course come with some trade-offs, longer averages lead to longer algorithmic delays in reporting/detecting changes in lane characteristics.
   * The most valuable next step in the future would be to instrument ways to view the entire pipeline stack in the video so that failure modes could be addressed in the most generalizable way possible. (For instance, at the binary masking or sliding window stage, rather than through frame averaging or frame ignoring strategies.)
   * More traffic (more cars) could affect performance as well, so I'd want to investigate examples with more cars
+* After incorporating yellow/white color thresholding focused strategies, it certainly gives me pause about what situations might arise where yellow and white lane lines may not be present.  In such cases, perhaps some kind of gradient based or other car following method would need to be a fallback system.  I mention those because that's what I imagine myself kind of doing as a human driver in vast parking lots, garages and dirt roads.
